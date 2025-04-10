@@ -37,4 +37,9 @@ export class EventController {
     return this.eventService.getVolunteersForEvent(eventId);
   }
 
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.eventService.deleteEvent(+id);
+  }
+
 }

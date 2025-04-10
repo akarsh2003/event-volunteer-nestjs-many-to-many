@@ -12,15 +12,18 @@ export class EventService {
     private readonly eventRepository: Repository<Event>,
   ) {}
 
+  //create an event
   create(createEventDto: CreateEventDto) {
     const event = this.eventRepository.create(createEventDto);
     return this.eventRepository.save(event);
   }
 
+  //find every events
   findAll() {
     return this.eventRepository.find();
   }
 
+  //find an event with it's id
   findOne(id: number) {
     return this.eventRepository.findOne({ where: { id } });
   }
@@ -33,6 +36,8 @@ export class EventService {
   //   return this.eventRepository.delete(id);
   // }
 
+
+  //find volunteers registered for an event with its id
   async getVolunteersForEvent(eventId: number) {
     const event = await this.eventRepository.findOne({
       where: { id: eventId },
@@ -44,6 +49,15 @@ export class EventService {
     }
   
     return event.volunteers;
+  }
+
+  //delete an event with its id 
+  async deleteEvent(id: number) {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    return this.eventRepository.remove(event);
   }
   
 }
